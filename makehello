@@ -1,0 +1,19 @@
+#!/bin/bash
+rm -f helloworld.so helloworld.o helloworld.c runme
+python setup.py build_ext --inplace
+if [ $? -ne 0 ]
+then
+exit
+fi
+
+#gcc -shared  $(python-config --cflags) -fPIC helloworld.c $(python-config --ldflags) -o helloworld.so
+if [ $? -ne 0 ]
+then
+exit
+fi
+gcc  $(python-config --cflags) -I./ main.c $(python-config --ldflags) -l:./helloworld.so -o runme 
+if [ $? -ne 0 ]
+then
+exit
+fi
+./runme
